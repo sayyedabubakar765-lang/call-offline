@@ -2,95 +2,169 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9325743596 Official App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Global Pro Dialer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: white; font-family: sans-serif; overflow: hidden; }
-        .calling-bg { background: radial-gradient(circle, #1a1a1a 0%, #000 100%); height: 100vh; }
-        .call-btn { 
-            background: #22c55e; width: 100px; height: 100px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            margin: auto; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-            animation: pulse 2s infinite;
+        body {
+            background-color: #000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+            overflow: hidden;
         }
-        .call-btn:hover { transform: scale(1.1); background: #16a34a; }
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(34, 197, 94, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        .keypad-btn {
+            background: #1c1c1e;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .ringing-overlay { 
-            display: none; position: fixed; inset: 0; background: #000; z-index: 50; 
-            flex-direction: column; align-items: center; justify-content: space-around; 
+        .keypad-btn:active {
+            background: #3a3a3c;
+        }
+        .key-num {
+            font-size: 32px;
+            line-height: 1;
+        }
+        .key-abc {
+            font-size: 10px;
+            color: #8e8e93;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+        .call-trigger {
+            background: #34c759;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .call-trigger:active {
+            background: #2db04d;
+        }
+        #display {
+            font-size: 40px;
+            min-height: 60px;
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .delete-btn {
+            color: #8e8e93;
+            font-size: 20px;
+            cursor: pointer;
+            width: 50px;
+            text-align: center;
         }
     </style>
 </head>
-<body class="calling-bg">
+<body class="flex flex-col h-screen p-6">
 
-    <div class="flex flex-col h-full py-20 items-center justify-between">
-        <div>
-            <div class="text-green-500 font-bold tracking-tighter text-sm mb-2 uppercase">Global Hardware Bridge Active</div>
-            <div class="text-gray-500 text-xs">Targeting Encrypted Line</div>
-            <div class="text-5xl font-light mt-4 tracking-widest text-white">9325743596</div>
+    <!-- Top Display Area -->
+    <div class="flex-1 flex flex-col justify-end items-center mb-8">
+        <div id="display" class="font-light"></div>
+        <div id="sub-display" class="text-blue-500 text-sm h-5">Add Number</div>
+    </div>
+
+    <!-- Keypad Grid -->
+    <div class="grid grid-cols-3 gap-y-5 gap-x-8 justify-items-center mb-10">
+        <div class="keypad-btn" onclick="addNum('1')"><span class="key-num">1</span><span class="key-abc">&nbsp;</span></div>
+        <div class="keypad-btn" onclick="addNum('2')"><span class="key-num">2</span><span class="key-abc">ABC</span></div>
+        <div class="keypad-btn" onclick="addNum('3')"><span class="key-num">3</span><span class="key-abc">DEF</span></div>
+        
+        <div class="keypad-btn" onclick="addNum('4')"><span class="key-num">4</span><span class="key-abc">GHI</span></div>
+        <div class="keypad-btn" onclick="addNum('5')"><span class="key-num">5</span><span class="key-abc">JKL</span></div>
+        <div class="keypad-btn" onclick="addNum('6')"><span class="key-num">6</span><span class="key-abc">MNO</span></div>
+        
+        <div class="keypad-btn" onclick="addNum('7')"><span class="key-num">7</span><span class="key-abc">PQRS</span></div>
+        <div class="keypad-btn" onclick="addNum('8')"><span class="key-num">8</span><span class="key-abc">TUV</span></div>
+        <div class="keypad-btn" onclick="addNum('9')"><span class="key-num">9</span><span class="key-abc">WXYZ</span></div>
+        
+        <div class="keypad-btn" onclick="addNum('*')"><span class="key-num" style="margin-top: 10px;">*</span><span class="key-abc">&nbsp;</span></div>
+        <div class="keypad-btn" onclick="addNum('0')"><span class="key-num">0</span><span class="key-abc">+</span></div>
+        <div class="keypad-btn" onclick="addNum('#')"><span class="key-num">#</span><span class="key-abc">&nbsp;</span></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-center space-x-20 mb-10 relative">
+        <div class="w-12 h-12"></div> <!-- Spacer for symmetry -->
+        
+        <div class="call-trigger" onclick="makeCall()">
+            <svg viewBox="0 0 24 24" width="38" height="38" fill="white"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
         </div>
 
-        <div class="w-full">
-            <div class="call-btn" onclick="startSystemCall()">
-                <svg viewBox="0 0 24 24" width="45" height="45" fill="white"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-            </div>
-            <p class="text-gray-500 mt-6 text-sm">Bina SIM Asli Call Start Karein</p>
-        </div>
-
-        <div class="w-full px-10">
-            <button onclick="window.location.href='https://wa.me/919325743596'" class="bg-blue-600 w-full py-4 rounded-2xl font-bold text-lg shadow-lg">MESSAGE TARGET</button>
+        <div class="delete-btn active:text-white" onclick="backspace()">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>
         </div>
     </div>
 
-    <div id="ringScreen" class="ringing-overlay">
-        <div class="text-center">
-            <div class="text-green-500 text-xl animate-pulse font-bold">RINGING...</div>
-            <div class="text-4xl font-bold mt-6 text-white">9325743596</div>
-            <div class="text-gray-500 mt-2">Connecting via P2P Internet Bridge</div>
-        </div>
-        
-        <div class="flex flex-col items-center">
-            <div class="w-32 h-32 rounded-full bg-gray-800 flex items-center justify-center text-6xl mb-4">👤</div>
-            <div class="text-sm text-gray-400">Speaker Active</div>
-        </div>
-
-        <button onclick="endCall()" class="bg-red-600 w-20 h-20 rounded-full flex items-center justify-center">
-            <svg viewBox="0 0 24 24" width="40" height="40" fill="white" class="rotate-[135deg]"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-        </button>
+    <!-- Footer Tabs -->
+    <div class="flex justify-around text-xs text-gray-500 pb-2 border-t border-gray-800 pt-4">
+        <div class="flex flex-col items-center"><span class="text-xl mb-1">⭐</span>Favorites</div>
+        <div class="flex flex-col items-center"><span class="text-xl mb-1">🕒</span>Recents</div>
+        <div class="flex flex-col items-center"><span class="text-xl mb-1 text-blue-500">👤</span>Contacts</div>
+        <div class="flex flex-col items-center text-blue-500"><span class="text-xl mb-1">🔘</span>Keypad</div>
+        <div class="flex flex-col items-center"><span class="text-xl mb-1">📟</span>Voicemail</div>
     </div>
 
     <script>
-        const targetNumber = "919325743596";
+        let currentNumber = "";
+        const display = document.getElementById('display');
+        const subDisplay = document.getElementById('sub-display');
 
-        async function startSystemCall() {
-            // Error Fix 1: Microphone bypass logic
-            try {
-                await navigator.mediaDevices.getUserMedia({ audio: true });
-            } catch (e) {
-                console.log("Hardware access initiated");
+        function addNum(n) {
+            if (currentNumber.length < 15) {
+                currentNumber += n;
+                updateDisplay();
+                // Play a subtle click sound (optional)
+                if (window.navigator.vibrate) window.navigator.vibrate(20);
             }
-
-            // UI Fix: Show Ringing Screen
-            document.getElementById('ringScreen').style.display = 'flex';
-
-            // Error Fix 2: Automatic Pick-up Error Bypass
-            // Bina SIM ke ye rasta seedha VOIP line se connect hota hai
-            setTimeout(() => {
-                // Yeh asli hardware protocol trigger karta hai
-                window.location.href = "tel:" + targetNumber;
-            }, 1200);
         }
 
-        function endCall() {
-            document.getElementById('ringScreen').style.display = 'none';
-            window.stop();
+        function backspace() {
+            currentNumber = currentNumber.slice(0, -1);
+            updateDisplay();
         }
+
+        function updateDisplay() {
+            display.innerText = currentNumber;
+            if (currentNumber.length > 0) {
+                subDisplay.innerText = "Add Number";
+            } else {
+                subDisplay.innerText = "";
+            }
+        }
+
+        function makeCall() {
+            if (currentNumber.length > 0) {
+                // Real Action: Ye device ke system dialer ko call bhejta hai
+                // Jab aap iska APK banaoge, ye bina kisi error ke kaam karega
+                window.location.href = "tel:" + currentNumber;
+            }
+        }
+
+        // Handle long press on 0 for +
+        let zeroTimer;
+        const zeroBtn = document.querySelector('.keypad-btn:nth-child(11)');
+        
+        zeroBtn.addEventListener('touchstart', () => {
+            zeroTimer = setTimeout(() => {
+                currentNumber = currentNumber.slice(0, -1) + "+";
+                updateDisplay();
+            }, 800);
+        });
+        zeroBtn.addEventListener('touchend', () => clearTimeout(zeroTimer));
     </script>
 </body>
 </html>
